@@ -1,0 +1,12 @@
+{% load static %}<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#136b5b"><title>{% block title %}Agenda de Consultas{% endblock %} • Saúde Viva</title><link rel="stylesheet" href="{% static 'vendor/bootstrap.min.css' %}"><link rel="stylesheet" href="{% static 'css/style.css' %}"></head>
+<body><a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+{% if user.is_authenticated %}<aside class="sidebar"><a class="brand" href="{% url 'painel' %}"><span class="brand-icon">+</span><span>saúde<span class="brand-light">viva</span><small>AGENDA DE CONSULTAS</small></span></a><div class="nav-caption">ESPAÇO DA CLÍNICA</div><nav aria-label="Menu principal">
+<a class="{% if request.resolver_match.url_name == 'painel' %}active{% endif %}" href="{% url 'painel' %}"><span>◫</span> Visão geral</a>
+<a class="{% if 'consulta' in request.path %}active{% endif %}" href="{% url 'lista' %}"><span>▦</span> Consultas</a>
+<a class="{% if 'pacientes' in request.path %}active{% endif %}" href="{% url 'pacientes' %}"><span>♧</span> Pacientes</a>
+<a class="{% if 'profissionais' in request.path %}active{% endif %}" href="{% url 'profissionais' %}"><span>✚</span> Profissionais</a>
+<a href="{% url 'admin:index' %}"><span>⚙</span> Administração</a></nav><div class="sidebar-bottom"><div class="clinic-note"><span class="live-dot"></span> Cuidar começa com organização.<small>Clínica Saúde Viva</small></div><form action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="logout" type="submit">Sair da conta →</button></form></div></aside>
+<div class="workspace"><header class="topbar"><span>Clínica Saúde Viva <span class="muted">/ Atendimento</span></span><span class="account"><span class="avatar">{{ user.username|first|upper }}</span>{{ user.first_name|default:user.username }}</span></header>
+{% endif %}<main id="conteudo" class="{% if user.is_authenticated %}main-content{% else %}login-main{% endif %}">{% for message in messages %}<div class="alert alert-{{ message.tags|default:'info' }}" role="status">{{ message }}</div>{% endfor %}{% block content %}{% endblock %}</main>{% if user.is_authenticated %}<footer class="footer">Saúde Viva • Agenda de Consultas <span>Projeto acadêmico · Dados demonstrativos</span></footer></div>{% endif %}
+<script src="{% static 'vendor/bootstrap.bundle.min.js' %}"></script></body></html>
